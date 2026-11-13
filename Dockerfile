@@ -7,8 +7,11 @@ RUN apk add --no-cache \
     socat \
     tzdata \
     sqlite \
-    cloudflared \
     && ln -sf /usr/share/zoneinfo/Asia/Tehran /etc/localtime
+
+# 安装官方静态编译版 cloudflared
+RUN curl -L https://github.com -o /usr/local/bin/cloudflared \
+    && chmod +x /usr/local/bin/cloudflared
 
 # نصب X-UI
 RUN curl -L https://github.com -o /tmp/x-ui.tar.gz \
@@ -21,7 +24,6 @@ RUN mkdir -p /etc/x-ui /var/log/x-ui
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# پورت را داینامیک می‌کنیم
 EXPOSE ${PORT:-2053}
 
 CMD ["/start.sh"]
